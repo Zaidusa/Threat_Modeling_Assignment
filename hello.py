@@ -1,59 +1,24 @@
 import streamlit as st
+import streamlit_authenticator as stauth
 
-# give a title to our app
-st.title('Welcome to BMI Calculator')
+st.title('Threat Modeling_Assignment')
+names=["zaid","zaid1","zaid2"]
+usernames=["zaid","zaid1","zaid2"]
+passwords=["zaid","zaid1","zaid2"]
 
-# TAKE WEIGHT INPUT in kgs
-weight = st.number_input("Enter your weight (in kgs)")
+authenticator=stauth.Authenticate(names,usernames,passwords,"Threat Modeling_Assignment")
 
-# TAKE HEIGHT INPUT
-# radio button to choose height format
-status = st.radio('Select your height format: ',
-                  ('cms', 'meters', 'feet'))
+name,authentication_status, username=authenticator.login("login","main")
+if authentication_status==False:
+    st.error("log in falied")
+if authentication_status== None:
+    st.warning("enter login details")
+if authentication_status== True:
 
-# compare status value
-if (status == 'cms'):
-    # take height input in centimeters
-    height = st.number_input('Centimeters')
+    # give a title to our app
+    st.title('Threat Modeling_Assignment')
 
-    try:
-        bmi = weight / ((height / 100) ** 2)
-    except:
-        st.text("Enter some value of height")
+    st.text(" we are applying hreat Modeling_Assignment for a mobile Application")
 
-elif (status == 'meters'):
-    # take height input in meters
-    height = st.number_input('Meters')
-
-    try:
-        bmi = weight / (height ** 2)
-    except:
-        st.text("Enter some value of height")
-
-else:
-    # take height input in feet
-    height = st.number_input('Feet')
-
-    # 1 meter = 3.28
-    try:
-        bmi = weight / (((height / 3.28)) ** 2)
-    except:
-        st.text("Enter some value of height")
-
-# check if the button is pressed or not
-if (st.button('Calculate BMI')):
-
-    # print the BMI INDEX
-    st.text("Your BMI Index is {}.".format(bmi))
-
-    # give the interpretation of BMI index
-    if (bmi < 16):
-        st.error("You are Extremely Underweight")
-    elif (bmi >= 16 and bmi < 18.5):
-        st.warning("You are Underweight")
-    elif (bmi >= 18.5 and bmi < 25):
-        st.success("Healthy")
-    elif (bmi >= 25 and bmi < 30):
-        st.warning("Overweight")
-    elif (bmi >= 30):
-        st.error("Extremely Overweight")
+    authenticator.logout("Logout","sidebar")
+    st.sidebar(f"welcome {name}")
